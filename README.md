@@ -1,6 +1,6 @@
 # Coyote-CIRCT
 
-Deploy CIRCT generated circuits effortlessly directly through Coyote.
+Deploy [CIRCT](https://circt.llvm.org/) generated circuits with a streaming abstraction effortlessly through Coyote.
 
 ## Prerequisites
 
