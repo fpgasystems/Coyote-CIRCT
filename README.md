@@ -1,6 +1,6 @@
 # Coyote-CIRCT
 
-Deploy [CIRCT](https://circt.llvm.org/) generated circuits with a streaming abstraction effortlessly through Coyote.
+Deploy [CIRCT](https://circt.llvm.org/) generated circuits with a streaming abstraction ([circt-stream](https://github.com/Dinistro/circt-stream.git)) effortlessly through Coyote.
 
 ## Prerequisites
 
