@@ -5,6 +5,8 @@ import lynxTypes::*;
 `include "axi_macros.svh"
 `include "lynx_macros.svh"
 
+{{d}}`define DBG_PROBES_C0_{{c}}
+
 /**
  * User logic
  * 
@@ -231,66 +233,69 @@ end
 //
 // DEBUG
 //
-ila_agg_0 inst_ila_agg_{{c}} (
-    .clk(aclk),
-    
-    .probe0(axis_sink.tvalid),
-    .probe1(axis_sink.tready),
-    .probe2(axis_sink.tlast),
-    .probe3(axis_sink.tdata), // 512
-    
-    .probe4(axis_src.tvalid),
-    .probe5(axis_src.tready),
-    .probe6(axis_src.tlast),
-    .probe7(axis_src.tdata), // 512
+`ifdef DBG_PROBES_C0_{{c}}
 
-    .probe8(axis_s1.tvalid),
-    .probe9(axis_s1.tready),
-    .probe10(axis_s1.tlast),
+    ila_agg_0 inst_ila_agg_{{c}} (
+        .clk(aclk),
+        
+        .probe0(axis_sink.tvalid),
+        .probe1(axis_sink.tready),
+        .probe2(axis_sink.tlast),
+        .probe3(axis_sink.tdata), // 512
+        
+        .probe4(axis_src.tvalid),
+        .probe5(axis_src.tready),
+        .probe6(axis_src.tlast),
+        .probe7(axis_src.tdata), // 512
 
-    .probe11(axis_s2.tvalid),
-    .probe12(axis_s2.tready),
-    .probe13(axis_s2.tlast),
+        .probe8(axis_s1.tvalid),
+        .probe9(axis_s1.tready),
+        .probe10(axis_s1.tlast),
 
-    .probe14(s_dist.valid), 
-    .probe15(s_dist.ready),
-    .probe16(s_dist.data), // 66  
+        .probe11(axis_s2.tvalid),
+        .probe12(axis_s2.tready),
+        .probe13(axis_s2.tlast),
 
-    .probe17(m_dist.valid), 
-    .probe18(m_dist.ready),
-    .probe19(m_dist.data), // 66  
+        .probe14(s_dist.valid), 
+        .probe15(s_dist.ready),
+        .probe16(s_dist.data), // 66  
 
-    .probe20(state_C), // 2
-    .probe21(cnt_q_C), // 32
-    .probe22(addr_C), // 48
+        .probe17(m_dist.valid), 
+        .probe18(m_dist.ready),
+        .probe19(m_dist.data), // 66  
 
-    .probe23(bpss_wr_req.valid),
-    .probe24(bpss_wr_req.ready),
-    .probe25(bpss_wr_req.data.vaddr), // 48
-    .probe26(bpss_wr_req.data.len), // 28
-    .probe27(bpss_wr_req.data.ctl),
-    .probe28(bpss_wr_req.data.pid) // 6
-);
+        .probe20(state_C), // 2
+        .probe21(cnt_q_C), // 32
+        .probe22(addr_C), // 48
 
-logic [31:0] cnt_sink;
-logic [31:0] cnt_src;
+        .probe23(bpss_wr_req.valid),
+        .probe24(bpss_wr_req.ready),
+        .probe25(bpss_wr_req.data.vaddr), // 48
+        .probe26(bpss_wr_req.data.len), // 28
+        .probe27(bpss_wr_req.data.ctl),
+        .probe28(bpss_wr_req.data.pid) // 6
+    );
 
-always_ff @(posedge aclk) begin
-    if(~aresetn) begin
-        cnt_sink <= 0;
-        cnt_src <= 0;
-    end
-    else begin
-        cnt_sink <= axis_sink.tvalid & axis_sink.tready ? cnt_sink + 1 : cnt_sink;
-        cnt_src <= axis_src.tvalid & axis_src.tready ? cnt_src + 1 : cnt_src;
-    end
-end 
+    logic [31:0] cnt_sink;
+    logic [31:0] cnt_src;
 
-vio_agg_0 inst_vio_agg_{{c}} (
-    .clk(aclk),
-    .probe_in0(cnt_sink), // 32
-    .probe_in1(cnt_src) // 32
-);
+    always_ff @(posedge aclk) begin
+        if(~aresetn) begin
+            cnt_sink <= 0;
+            cnt_src <= 0;
+        end
+        else begin
+            cnt_sink <= axis_sink.tvalid & axis_sink.tready ? cnt_sink + 1 : cnt_sink;
+            cnt_src <= axis_src.tvalid & axis_src.tready ? cnt_src + 1 : cnt_src;
+        end
+    end 
 
+    vio_agg_0 inst_vio_agg_{{c}} (
+        .clk(aclk),
+        .probe_in0(cnt_sink), // 32
+        .probe_in1(cnt_src) // 32
+    );
+
+`endif
 
 endmodule

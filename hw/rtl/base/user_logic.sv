@@ -5,7 +5,7 @@ import lynxTypes::*;
 `include "axi_macros.svh"
 `include "lynx_macros.svh"
 
-{{d}}DBG_PROBES
+{{d}}`define DBG_PROBES_C0_{{c}}
 
 /**
  * User logic
@@ -84,7 +84,11 @@ top_config_{{c}}_0 inst_top_{{c}} (
 assign axis_src.tlast = 1'b0;
 assign axis_src.tkeep = ~0;
 
-`ifdef DBG_PROBES
+//
+// DEBUG
+//
+`ifdef DBG_PROBES_C0_{{c}}
+
     ila_base_0 inst_ila_base_{{c}} (
         .clk(aclk),
         
@@ -117,6 +121,7 @@ assign axis_src.tkeep = ~0;
         .probe_in0(cnt_sink), // 32
         .probe_in1(cnt_src) // 32
     );
+    
 `endif
 
 

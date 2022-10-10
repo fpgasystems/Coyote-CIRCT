@@ -87,43 +87,50 @@ top_config_{{c}}_0 inst_top_{{c}} (
 
 assign axis_src.tkeep = ~0;
 
-ila_stats_0 inst_ila_stats_{{c}} (
-    .clk(aclk),
-    
-    .probe0(axis_sink.tvalid),
-    .probe1(axis_sink.tready),
-    .probe2(axis_sink.tlast),
-    .probe3(axis_sink.tdata), // 512
-    
-    .probe4(axis_src.tvalid),
-    .probe5(axis_src.tready),
-    .probe6(axis_src.tlast),
-    .probe7(axis_src.tdata), // 512
-    
-    .probe8(max_valid),
-    .probe9(max_last),
-    .probe10(max_data) // 64
-);
+//
+// DEBUG
+//
+`ifdef DBG_PROBES_C0_{{c}}
 
-logic [31:0] cnt_sink;
-logic [31:0] cnt_src;
+    ila_stats_0 inst_ila_stats_{{c}} (
+        .clk(aclk),
+        
+        .probe0(axis_sink.tvalid),
+        .probe1(axis_sink.tready),
+        .probe2(axis_sink.tlast),
+        .probe3(axis_sink.tdata), // 512
+        
+        .probe4(axis_src.tvalid),
+        .probe5(axis_src.tready),
+        .probe6(axis_src.tlast),
+        .probe7(axis_src.tdata), // 512
+        
+        .probe8(max_valid),
+        .probe9(max_last),
+        .probe10(max_data) // 64
+    );
 
-always_ff @(posedge aclk) begin
-    if(~aresetn) begin
-        cnt_sink <= 0;
-        cnt_src <= 0;
+    logic [31:0] cnt_sink;
+    logic [31:0] cnt_src;
+
+    always_ff @(posedge aclk) begin
+        if(~aresetn) begin
+            cnt_sink <= 0;
+            cnt_src <= 0;
+        end
+        else begin
+            cnt_sink <= axis_sink.tvalid & axis_sink.tready ? cnt_sink + 1 : cnt_sink;
+            cnt_src <= axis_src.tvalid & axis_src.tready ? cnt_src + 1 : cnt_src;
+        end
     end
-    else begin
-        cnt_sink <= axis_sink.tvalid & axis_sink.tready ? cnt_sink + 1 : cnt_sink;
-        cnt_src <= axis_src.tvalid & axis_src.tready ? cnt_src + 1 : cnt_src;
-    end
-end
 
-vio_stats_0 inst_vio_stats_{{c}} (
-    .clk(aclk),
-    .probe_in0(cnt_sink), // 32
-    .probe_in1(cnt_src) // 32
-);
+    vio_stats_0 inst_vio_stats_{{c}} (
+        .clk(aclk),
+        .probe_in0(cnt_sink), // 32
+        .probe_in1(cnt_src) // 32
+    );
+
+`endif
 
 
 endmodule
