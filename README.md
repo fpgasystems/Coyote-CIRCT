@@ -4,7 +4,7 @@ Deploy [CIRCT](https://circt.llvm.org/) generated circuits with a streaming abst
 
 ## Prerequisites
 
-`Vivado 2022.1`. 
+`Vivado 2022.1`, `cmake` and `Ninja`. 
 
 ## Setup
 
