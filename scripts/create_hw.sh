@@ -56,6 +56,7 @@ for i in ${@:4:$3} ; do
   cat hw/${args_arr[3*$curr+0]}/${args_arr[3*$curr+1]}/init_ip.tcl >> build_hw_$1/init_ip.tcl
   cp -r hw/${args_arr[3*$curr+0]}/${args_arr[3*$curr+1]}/${args_arr[3*$curr+2]}/* build_hw_$1/config_$curr/ext
   cp -r hw/${args_arr[3*$curr+0]}/${args_arr[3*$curr+1]}/user_logic.sv build_hw_$1/config_$curr/user_logic_c0_$curr.sv
+  echo ${args_arr[3*$curr+0]}/${args_arr[3*$curr+1]}/${args_arr[3*$curr+2]}/ > build_hw_$1/config_$curr/ext/config.txt
   python scripts/replace.py build_hw_$1/config_$curr/user_logic_c0_$curr.sv $curr $dbg
   curr=$((curr+1))
 done
