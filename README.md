@@ -53,7 +53,7 @@ Regular RTL circuits designed in HDL can also be included in the same manner.
 
 #### Circuit dialects and types
 
-Each circuit type has a separate directory under `hw/dialect/`.  Different interface to CIRCT generated circuits or a different system configuration imply a different circuit type. The following types are present for now:
+Each circuit type has a separate directory under `hw/<dialect>/`.  Different interface to CIRCT generated circuits or a different system configuration imply a different circuit type. The following types are present for now:
 
 | Type      | Description                                                               |
 | --------- | ------------------------------------------------------------------------- |
@@ -63,7 +63,7 @@ Each circuit type has a separate directory under `hw/dialect/`.  Different inter
 | Mem       | Circuits showcasing integration with external circuits. These can be either RTL or some other form of HLS.                |
 | Custom    | Custom circuits.                                            |
 
-To add a new circuit type create a new directory under `hw/dialect/`. 
+To add a new circuit type create a new directory under `hw/<dialect>/`. 
 
 The `user_logic.sv` is the top level file for the integration of the circuits of a specific type into `coyote`. This file needs to be present and needs to be adapted for every new circuit type.
 
