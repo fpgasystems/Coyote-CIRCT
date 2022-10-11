@@ -16,7 +16,7 @@ func.func @compute(%val: i64) -> i64 {
   cf.br ^bb4(%t3: i64)
 ^bb3:
   %c10 = arith.constant 10 : i64
-  %t4 = arith.muli %c10, %val : i64
+  %t4 = arith.addi %c10, %val : i64
   cf.br ^bb4(%t4: i64)
 ^bb4(%t5: i64):
   cf.br ^bb5(%t5: i64)
