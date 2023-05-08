@@ -1,8 +1,11 @@
 #!/bin/bash
 
 # TODO drop lld, clang, and clang++ requirements? 
-cd circt-stream
-mkdir circt/build && cd circt/build
+
+SCRIPT_DIR=$(pwd)/$(dirname "$0")
+
+cd ${SCRIPT_DIR}/../circt-stream
+mkdir -p circt/build && cd circt/build
 cmake ../llvm/llvm \
     -DCMAKE_BUILD_TYPE=Debug \
     -DLLVM_ENABLE_PROJECTS=mlir \
@@ -12,12 +15,12 @@ cmake ../llvm/llvm \
     -DLLVM_USE_LINKER=lld \
     -DCMAKE_C_COMPILER=clang \
     -DCMAKE_CXX_COMPILER=clang++
-make
+make -j
 
 # Back to circt-stream
-cd ../..
+cd ${SCRIPT_DIR}/../circt-stream
 
-mkdir build && cd build
+mkdir -p build && cd build
 cmake .. \
     -DLLVM_DIR=$PWD/../circt/build/lib/cmake/llvm \
     -DMLIR_DIR=$PWD/../circt/build/lib/cmake/mlir \
@@ -28,6 +31,6 @@ cmake .. \
     -DLLVM_USE_LINKER=lld \
     -DCMAKE_C_COMPILER=clang \
     -DCMAKE_CXX_COMPILER=clang++
-make
+make -j
 
 cd ..
