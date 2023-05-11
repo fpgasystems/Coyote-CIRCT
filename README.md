@@ -8,6 +8,12 @@ Deploy [CIRCT](https://circt.llvm.org/) generated circuits with a streaming abst
 
 ## Setup
 
+Install packages:
+
+```bash
+sudo apt install clang lld
+```
+
 Initialize the submodules:
 
 ```bash
@@ -25,8 +31,8 @@ bash scripts/build_circt_stream.sh
 Once the project is built you can generate your own circuits created in one of the two supported dialects -> `std` (only used for benchmarks) and `stream`. Place the `.mlir` circuit description in a subdirectory within a target dialect. To generate the circuit execute the following script (Ex. a stream filter and a distinct operator):
 
 ```bash
-bash scripts/export_circt.sh stream filter addcomp 128
-bash scripts/export_circt.sh stream mem distinct 128
+bash scripts/export_stream.sh filter addcomp 128
+bash scripts/export_stream.sh mem distinct 128
 ```
 
 Check the script for the detailed list of args needed.
